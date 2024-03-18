@@ -14,11 +14,11 @@ The following command installs all necessary packages:
 ```
 pip install -r requirements.txt
 ```
-The project was tested using `Python 3.7`.
+The project was tested using `Python 3.8`.
 
 Also, one needs to download the pre-generated files from [Google Drive](https://drive.google.com/file/d/1HmdFMtSwHe0FSSi9xOCkCC_IHsDWLV7Z/view?usp=sharing), and locate them in the folder at `args.pre_gen`.
 
-## Overview of Prefer to Classify (P2C)
+## 0. Overview of Prefer to Classify (P2C)
 
 P2C is a multi-task learning framework that jointly learns (1) a target task (e.g., sentiment classification) and (2) a preference between two samples for the given task label (e.g., positive or negative). From the pair-wise comparison, P2C captures the finer task information which can't be captured in a sample-wise evaluation. 
 
@@ -26,7 +26,7 @@ To train the classifier with P2C, one first needs to prepare a target dataset co
 
 To ease the usage of P2C, we release the constructed datasets (including preference labels) and checkpoints of the classifiers (trained by P2C) at [Huggingface](https://huggingface.co/JaehyungKim) or [Google Drive](https://drive.google.com/drive/folders/1za5ZeyMFxt86ad8xWcCnsCtZt-JA2hxQ?usp=sharing). More details are described in the below parts. 
 
-## P2C with Generative Preference
+## 1. P2C with Generative Preference
 
 The first proposed way to collect preference labels is prompting the recent large language models (LLMs) to ask which sentence is more preferred as a specific task label. One can collect the generative preference labels using the following scripts:
 ```
@@ -40,7 +40,7 @@ python train_generative.py --pref_type gen --train_type xxxx --consistency --lam
 ```
 For more details and running the baseline, please see the script `run_generative.sh`.
 
-## P2C with Subjective Preference
+## 2. P2C with Subjective Preference
 
 The second proposed way to collect preference labels is by hiring crowd workers. As denoted in the paper, we use Amazon Mechanical Turk (AMT) and collect the subjective preference labels on 5000 pair of samples on Dynasent2 Benchmark. To ease the experiments, we release the Huggingface dataset including other preference labels (extractive and generative). The dataset and the desired preference labels are automatically downloaded when running the following code to train the classifier with P2C: 
 ```
@@ -48,7 +48,7 @@ python train_subjective.py --train_type xxxx --pref_type sub --consistency --lam
 ```
 For more details and running the baseline, please see the script `run_subjective.sh`.
 
-## P2C with Extractive Preference
+## 3. P2C with Extractive Preference
 
 The third proposed way to collect preference labels is recycling the annotation records for the target task. For example, when 5 annotators are engaged to determine the label for the binary sentiment classification, it is natural to assume that the sample with more votes as positive label is preferred as positive as well. The details how to extract this preference label from the existing annotation records are described in `pref_gen.ipynb`.
 
@@ -60,7 +60,7 @@ python train_extractive.py --train_type xxxx --pre_gen final_files --sampling di
 ```
 For more details and running the baseline, please see the script `run_extractive.sh`.
 
-## P2C on Vision
+## 4. P2C on Vision
 
 In addition, we have demonstrated the effectiveness of P2C on image classification. Specifically, we construct the multiple binary classification benchmarks using SUN dataset. First, one needs to pre-process [SUN dataset](https://drive.google.com/file/d/1WW3fFjbYwFeZ4x_lo55Ip_JzlzURT4YU/view?usp=sharing) using `vision/SUN_preprocessing.ipynb`. Then, one can run the following script to train ResNet-18 with P2C using extractive preference labels:
 ```
